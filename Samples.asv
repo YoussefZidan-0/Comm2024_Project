@@ -10,7 +10,7 @@ samplingRates = [fs1, fs2, fs3, fs4, fs5];
 Left_channel = cell(1, length(audioSignals));
 Right_channel = cell(1, length(audioSignals));
 monoSignals = cell(1, 5);  
-paddedSignals = cell(1, 5);
+maxLength  
 
 for i=1:length(audioSignals)
 Left_channel{i}=audioSignals{i}(:,1);
@@ -47,19 +47,16 @@ for i = 1:length(audioSignals)
     xlabel('Frequency (Hz)');
     ylabel('Magnitude');
 end
-
 for i = 1:length(audioSignals)
-    % Step 1: Combine stereo channels
     x = audioSignals{i};
+    
+    
     if size(x, 2) > 1
-        x = sum(x, 2);  % Combine left and right channels
+        x = sum(x, 2);  
     end
-    monoSignals{i} = x;  % Store mono signal
-
-    % Step 2: Determine maxLength (specific to each signal) and pad
-    maxLength = length(x);  % Use the current signal length
-    paddedSignal = [x; zeros(maxLength - length(x), 1)];  % Pad with zeros
-    paddedSignals{i} = paddedSignal;  % Store padded signal
+    monoSignals{i} = x;  
+    % Update maxLength to the longest signal length
+    maxLength = max(maxLength, length(x));
 end
 BWs_Hz = BWs * (fs / 2);
 BWs_kHz = BWs_Hz / 1000; 
