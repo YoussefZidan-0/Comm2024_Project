@@ -1,0 +1,63 @@
+fc_mod = zeros(1,5);  % Carrier frequencies
+t = cell(1, 5);  % Time vectors for each signal
+modulated_signal = cell(1, 5);  % Modulated signals
+sentsignal=[];
+max_length=0;
+interp_factor = 14;
+fs=44100;
+for i = 1:length(audioSignals)
+    % Retrieve the current padded signal
+    x1_inter = inter(paddedSignals{1},interp_factor);
+    x2_inter = inter(paddedSignals{2},interp_factor);
+    x3_inter = inter(paddedSignals{3},interp_factor);
+    x4_inter = inter(paddedSignals{4},interp_factor);
+    x5_inter = inter(paddedSignals{5},interp_factor);
+
+    fs_interpolated = interp_factor * fs;  
+    t_interpolated = (0:length(x_inter)-1) / fs_interpolated; 
+
+    fc_mod_1=100e3;
+    fc_mod_2=150e3;
+    fc_mod_3=200e3;
+    fc_mod_4=250e3;
+    fc_mod_5=300e3;
+
+    Carrier1=cos(2*pi*fc_mod_1*t_interpolated);
+    Carrier2=cos(2*pi*fc_mod_2*t_interpolated);
+    Carrier3=cos(2*pi*fc_mod_3*t);
+    Carrier4=cos(2*pi*fc_mod_4*t);
+    Carrier5=cos(2*pi*fc_mod_5*t);
+ 
+        case 1
+            modulated_signal_1 = x_inter .* Mod_carrier;  % Modulation for signal 1
+        case 2
+            modulated_signal_2 = x_inter .* Mod_carrier;  % Modulation for signal 2
+        case 3
+            modulated_signal_3 = x_inter .* Mod_carrier;  % Modulation for signal 3
+        case 4
+            modulated_signal_4 = x_inter .* Mod_carrier;  % Modulation for signal 4
+        case 5
+            modulated_signal_5 = x_inter .* Mod_carrier;  % Modulation for signal 5
+  
+max_length = max([length(modulated_signal_1), length(modulated_signal_2),length(modulated_signal_3),length(modulated_signal_4),length(modulated_signal_5)]);
+sentsignal=modulated_signal_1+modulated_signal_2+modulated_signal_3+modulated_signal_4+modulated_signal_5;
+
+% Plot the combined FDM signal in the time domain
+figure;
+subplot(2, 1, 1);
+t_total = (0:length(sentsignal)-1) / (10*fs);  % Time vector for the combined signal
+plot(t_total, sentsignal);
+title('FDM Signal (Time Domain)');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+% Plot the combined FDM signal in the frequency domain
+subplot(2, 1, 2);
+N = length(sentsignal);  % Number of samples in the combined signal
+f = (-N/2:N/2-1) * 10*fs / N;  % Frequency axis
+spectrum_fdm = fftshift(fft(sentsignal, N));  % Compute and shift the FFT
+plot(f, abs(spectrum_fdm) / N);
+title('FDM Signal (Frequency Domain)');
+xlabel('Frequency (Hz)');
+ylabel('Magnitude');
+%sound(sentsignal, 10 * fs);
