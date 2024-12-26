@@ -1,9 +1,12 @@
+%% Section3: Receiver
 % Constants
 offset = 0;
 IF = 25e3;  % Intermediate frequency (25 kHz)
 fs_interpolated = interp_factor * fs;  % Interpolated sampling rate
 receivedSignal = sentsignal;  % Received FDM signal
-Rf_enable = 0;  % Enable/Disable RF filter
+%receivedSignal = awgn(sentsignal,);  % Received FDM signal
+
+Rf_enable = 1;  % Enable/Disable RF filter
 
 % Relaxed Filter Constraints
 A_pass = 2;

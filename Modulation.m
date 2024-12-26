@@ -1,3 +1,4 @@
+%%  section2: Modulation
 % Constants
 fc_mod = zeros(1, 5);  % Carrier frequencies
 modulated_signal = cell(1, 5);  % Modulated signals
